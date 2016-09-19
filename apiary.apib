@@ -1,0 +1,195 @@
+FORMAT: 1A
+HOST: http://slc09ubd.us.oracle.com:8001/Energy/1
+
+# Energy Service 1.0
+
+Polls is a simple API allowing consumers to view polls and vote in them.
+
+## Estimate Update [/ENERGYESTIMATEUPDATE/v01/estimate/{AccountID}?clientKey={key}]
+
+This resource is used to update the estimates. Note that it can be used to update other information too such as the name of the account owner, and the location of the service.
+
++ Parameters
+
+    + AccountID - the custer account ID
+    + key - a key provisioned for your application via the developer portal
+
+### Update Estimate for an Account [PUT]
+
++ Request
+    
+    + Headers
+        
+            Content-Type: application/json
+
+    + Body
+    
+            { 
+                "name": "Darko", 
+                "gas_estimate_usage": "32,002 Btu", 
+                "gas_estimate_cost": "¥ 63,322", 
+                "rate_per_btu": "¥ 1.7",
+                "electricity_estimate_usage": "5,325 kW", 
+                "electricity_estimate_cost": "¥ 18,324", 
+                "rate_per_kw": "¥ 1.2",
+                "environment": "Japan 1" 
+            }
+
++ Response 200
+
+## Estimate Retrieve [/ENERGYESTIMATEUSAGE/v01/estimate/{AccountID}?clientKey={key}]
+
+This resource is separates form the top one due to a service implementtion constraint. This is effectivly the get operation for the estimates. 
+
++ Parameters
+
+    + AccountID - the custer account ID
+    + key - a key provisioned for your application via the developer portal
+
+### Get Estimate for an Account [GET]
+
++ Response 200
+
+    + Headers 
+    
+            Content-Type: application/json
+    
+    + Body
+    
+            { 
+                "account_number": "4859634", 
+                "name": "Darko", 
+                "gas_estimate_usage": "33,324 Btu", 
+                "gas_estimate_cost": "¥ 23,224", 
+                "rate_per_btu": "¥ 1.7",
+                "electricity_estimate_usage": "6,876 kW", 
+                "electricity_estimate_cost": "¥ 11,339", 
+                "rate_per_kw": "¥ 1.2",
+                "environment": "Japan 2" 
+            }
+            
+
+## Usage Update [/ENERGYUPDATEUSAGE/v01/usage/{AccountID}?clientKey={key}]
+
+This resource is used to update the actual usage of the customer account. Notice that it has some overlapping fields to the estimate resource, and that either resource can be used to update those overlapping fields. 
+
++ Parameters
+
+    + AccountID - the custer account ID
+    + key - a key provisioned for your application via the developer portal
+
+### Update Usage for an Account [PUT]
+
++ Request 
+
+    + Headers
+    
+            Content-Type: application/json
+            
+    + Body
+    
+            { 
+                "name": "Darko", 
+                "gas_usage": "20,003 Btu", 
+                "gas_cost": "¥ 46,896",
+                "rate_per_btu": "¥ 1.7",
+                "electricity_usage": "3,430 kW", 
+                "electricity_cost": "¥ 12,932",
+                "rate_per_kw": "¥ 1.2",
+                "environment": "Japan 1" 
+            }
+
++ Response 200
+
+## Usage Retrieve [/ENERGYGETUSAGE/v01/usage/{AccountID}?clientKey={key}]
+
+This resource again is separate due to a service implemnetation limitation. This is the get for the usage for the current month. 
+
++ Parameters
+
+    + AccountID - the custer account ID
+    + key - a key provisioned for your application via the developer portal
+
+### Get Usage for an Account [GET]
+
++ Response 200
+
+    + Headers 
+    
+            Content-Type: application/json
+    
+    + Body
+    
+            { 
+                "account_number": "4859634", 
+                "name": "Darko", 
+                "gas_usage": "20,513 Btu", 
+                "gas_cost": "¥ 46,437",
+                "rate_per_btu": "¥ 1.7",
+                "electricity_usage": "3,435 kW", 
+                "electricity_cost": "¥ 12,932",
+                "rate_per_kw": "¥ 1.2",
+                "environment": "Japan 1" 
+            }
+
+
+## Create Accounts [/ENERGYCREATEACCOUNT/v01/accounts?clientKey={key}]
+
+This resource is used to create accounts in the system. Notice that you need to provide a new account ID which is unique from the existing ones. 
+
++ Parameters
+
+    + key - a key provisioned for your application via the developer portal
+
+### PUT Account [PUT]
+
++ Request
+
+    + Headers
+        
+            Content-Type: application/json
+            
+    + Body
+    
+            { 
+                "account_number": "4859634", 
+                "name": "Darko", 
+                "rate_per_btu": "¥ 1.7",
+                "rate_per_kw": "¥ 1.2",
+                "enviornment": "Japan 1" 
+            }
+            
++ Response 200
+
+## List Accounts [/ENERGYACCOUNTSLIST/v01?clientKey={key}]
+
+This resource is used to list out the set of accounts available in the system. Note that it returns a collection of JSON obejects. 
+
++ Parameters
+
+    + key - a key provisioned for your application via the developer portal
+    
+### GET Accounts [GET]
+
++ Response 200
+
+    + Headers
+    
+            Content-Type: application/json
+            
+    + Body
+    
+            [ 
+                { 
+                    "account_number": "4859634", 
+                    "name": "Darko",
+                    "rate_per_btu": "¥ 1.7",
+                    "rate_per_kw": "¥ 1.2"
+                }, 
+                {   
+                    "account_number": "3141592", 
+                    "name": "Robert",
+                    "rate_per_btu": "¥ 1.7",
+                    "rate_per_kw": "¥ 1.2"
+                } 
+            ]
